@@ -88,11 +88,4 @@ function addProduct(){
         
         }
 
-<<<<<<< HEAD
     });
-=======
-    .catch(function(err) {
-    // Une erreur est survenue
-    console.log('Error occured during api call..')
-});
->>>>>>> d2cb46f3c1df05021c3b4b88c3e0e59d701ac0b9

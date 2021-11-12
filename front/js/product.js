@@ -2,6 +2,8 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const id = urlParams.get('id')
+let currentProduct;
+
 
 // Call API to get one product based on the id we juste retrieved
 fetch('http://localhost:3000/api/products/' + id)
@@ -11,7 +13,7 @@ fetch('http://localhost:3000/api/products/' + id)
         }
     })
     .then(function(product) {
-        console.log(product);
+        currentProduct = product;
 
         // Get html zone where we want to add the product title
         let productTitle = document.getElementById('title');
@@ -29,11 +31,7 @@ fetch('http://localhost:3000/api/products/' + id)
         productPrice.innerHTML += product['price'];
 
         // Get html zone where we want to add the product image
-<<<<<<< HEAD
         let productImage = document.getElementsByClassName('item__img')[0];
-=======
-        let productImage = document.getElementsByClassName('item__img');
->>>>>>> d2cb46f3c1df05021c3b4b88c3e0e59d701ac0b9
         // Insert product image into corresponding html zone
         productImage.innerHTML += `<img src="` + product['imageUrl'] + `" alt="` + product['altTxt'] + `">`;
 
@@ -49,43 +47,34 @@ fetch('http://localhost:3000/api/products/' + id)
         console.log('Error occured during api call..');
     });
 
-function addToLocalStorage()
-{
-    localStorage.setItem('cart');
-    alert('Item added');
-}
+    // Get add to cart button
+    let addToCartButton = document.getElementById('addToCart');
 
-function addToCart()
-{
-    const addToCart = document.getElementById('addToCart');
-    addToCart.onClick = addToLocalStorage;
-}
-
-
-function addProduct(){
-    let products = [];
-    if(localStorage.getItem('products')){
-        products = JSON.parse(localStorage.getItem('products'));
-    }
-    products.push({'productId' : productId + 1, image : '<imageLink>'});
-    localStorage.setItem('products', JSON.stringify(products));
-}
-
-// user data
-    // effective Btn creation
-    let btnEnvoyer = document.getElementById('addToCart');
-
-    btnEnvoyer.addEventListener('click', (event) => {
+    // Add onclick listener on add to cart button
+    addToCartButton.addEventListener('click', (event) => {
         event.preventDefault();
-        let optionsProduit = {
-            id: arr._id,
-            quantity: parseInt(quantity.value),
-            colors: select.value,
-            name: arr.name,
-            imgProduit: arr.imageUrl,
-            imgAltProduit: arr.altTxt,
-            price: parseFloat(arr.price)
-        
-        }
+        let colorsSelect = document.getElementById('colors');
+        let productChoice = {
+            id: currentProduct['_id'],
+            name: currentProduct['name'],
+            unitPrice: currentProduct['price'],
+            colors: colorsSelect.options[colorsSelect.selectedIndex].text,
+            quantity: document.getElementById('quantity').value
+        };
+        console.log(productChoice)
 
+
+        // Add list of choices in localstorage only once if not exist
+        let choices = JSON.parse(localStorage.getItem('choices'));
+        if (choices) {
+            console.log('already exist')
+        }
+        else {
+            choices = []
+            localStorage.setItem('choices', JSON.stringify(choices));
+        }
+        
+        // Add current choice to local storage
+        choices.push(productChoice)
+        localStorage.setItem('choices', JSON.stringify(choices));
     });

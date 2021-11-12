@@ -1,76 +1,11 @@
-let tabLocalStorage = JSON.parse(localStorage.getItem('cart'));
+// Retrieve current product choices
+let choices = JSON.parse(localStorage.getItem('choices'));
+console.log(choices)
 
-let section = document.getElementById('cart__items');
-
-/* affect info for each element in cart */
-tabLocalStorage.map(p =>{
-    let cartinfo = document.createElement('article');
-    cartinfo.classList.add('cart__item');
-    cartinfo.setAttribute('data-id', `${p.id}`);
-
-    let imgCart = document.createElement('img');
-    imgCart.classList.add('cart__item__img');
-    imgCart.src = p.imgProduit;
-    imgCart.setAttribute("alt", `${p.imgAltProduit}`);
+let productChoice = localStorage.getItem(choices);
 
 
-// Call API to get all products and add them to HTML
-fetch('http://localhost:3000/api/products/')
-    .then(function(res) {
-        if (res.ok) {
-            return res.json();
-        }
-    })
-    .then(function(products) {
-
-        for (const product of products) {
-            items.innerHTML += `
-         <article class="cart__item" data-id=` + product['_id'] + `">
-          <div class="cart__item__img">
-          <img src=` + product['imageUrl'] + `" alt="` + product['altTxt'] + `">
-          </div>
-                <div class="cart__item__content">
-                  <div class="cart__item__content__titlePrice">
-            <h2>` + product['name'] + `</h2>
-            <p>` + product['price'] + `</p>
-            </div>
-                  <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                      <p>Qté : </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-                    </div>
-                    <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Supprimer</p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-      `;
-        }
-
-
-        
-        // quantity div
-    let quantityCarte = document.createElement('div');
-    quantityCarte.classList.add('cart__item__content__settings__quantity');
-
-    let quantityDescCarte = document.createElement('p');
-    quantityDescCarte.innerText = 'Qté : ';
-
-    let quantityInputCarte = document.createElement('input');
-    quantityInputCarte.setAttribute('type', 'number');
-    quantityInputCarte.classList.add('itemQuantity');
-    quantityInputCarte.setAttribute('name', 'itemQuantity');
-    quantityInputCarte.setAttribute('min', '1');
-    quantityInputCarte.setAttribute('max', '100');
-    quantityInputCarte.setAttribute('value', `${p.quantity}`);
-    })
-
-    .catch(function(err) {
-        // Une erreur est survenue
-        console.log('Error occured during api call..')
-    });
-
-var cart = localStorage.getItem('cart');
-console.log(cart)
-});
+// Get html zone where we want to add the product title
+let cartProduct = document.getElementById('cart__items');
+// Insert product title into corresponding html zone
+cartProduct.innerHTML += localStorage.choices;

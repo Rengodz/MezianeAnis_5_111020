@@ -9,3 +9,12 @@ let productChoice = localStorage.getItem(choices);
 let cartProduct = document.getElementById('cart__items');
 // Insert product title into corresponding html zone
 cartProduct.innerHTML += localStorage.choices;
+
+
+
+for( let i = 0; i < localStorage.length; i++){
+    localStorage.key(4);
+}
+
+let totalQuantity = document.getElementById('totalQuantity')
+totalQuantity.innerHTML += localStorage.length.choices;

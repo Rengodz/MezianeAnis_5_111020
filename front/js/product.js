@@ -59,7 +59,8 @@ fetch('http://localhost:3000/api/products/' + id)
             name: currentProduct['name'],
             unitPrice: currentProduct['price'],
             colors: colorsSelect.options[colorsSelect.selectedIndex].text,
-            quantity: document.getElementById('quantity').value
+            quantity: document.getElementById('quantity').value,
+            imageUrl: currentProduct['imageUrl']
         };
         console.log(productChoice)
 

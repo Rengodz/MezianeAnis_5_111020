@@ -31,3 +31,17 @@ choices.forEach(function(item){
         </article>
     `;
 });
+
+
+  let totalPrice = 0
+
+  if(choices.lenght){
+      choices.forEach(element=> {
+          totalPrice += parseInt(element.unitPrice,10)
+
+      });
+  }
+  document.getElementById("totalPrice").innerHtml = `totalPrice:$${totalPrice}`
+
+
+

@@ -1,6 +1,6 @@
 // Retrieve current product choices
 let choices = JSON.parse(localStorage.getItem('choices'));
-console.log(choices)
+console.log(choices);
 
 // Get html zone where we want to add product choices
 let cartItems = document.getElementById('cart__items');
@@ -29,19 +29,54 @@ choices.forEach(function(item){
                 </div>
             </div>
         </article>
+        
     `;
 });
 
 
-  let totalPrice = 0
+// Get delete item button
+let deleteItemButton = document.getElementById('deleteItem');
+// Add onclick listener on delete item to cart button
+deleteItemButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    function removeItem(name) {
+        for (let i = 0; i < choices.length; i += 1) {
+          if (choices[i].name === name) {
+              choices[i].count --;
+              
+              if (choices[i].count === 0) {
+                  choices.splice(i, 1); // removes item from the array
+              }
+              break;
+            }
+        }
+      }
 
-  if(choices.lenght){
-      choices.forEach(element=> {
-          totalPrice += parseInt(element.unitPrice,10)
 
-      });
-  }
-  document.getElementById("totalPrice").innerHtml = `totalPrice:$${totalPrice}`
+      
 
 
+              let totalPrice = [];
+
+              for (let price = 0; price < choices.lenght; price++){
+                  let productPriceInCart = choices[price].unitPrice;
+                  
+                  totalPrice.push(productPriceInCart)
+                  console.log(totalPrice);
+              }
+              
+              const reducer = (accumulator, currentValue) => accumulator + currentValue;
+              const totalResult = totalPrice.reduce(reducer,0);
+            
+              console.log(totalResult);  
+            
+            
+              // Get html zone where we want to add the total price
+              let cartPrice = document.getElementById('totalPrice');
+              // Insert total price into corresponding html zone
+              cartPrice.innerHTML += totalPrice;
+            
+           
+           
+ });
 

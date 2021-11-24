@@ -38,6 +38,8 @@ if (choices) {
     let totalPrice = 0;
     choices.forEach(function(item){
         totalPrice += item['quantity'] * item['unitPrice'];
+    let totalPriceHtml = document.getElementById('totalPrice');
+    totalPriceHtml.innerHTML += (totalPrice);
     });
     console.log(totalPrice);
 
@@ -60,8 +62,9 @@ if (choices) {
                     localStorage.removeItem('choices');
                     localStorage.setItem('choices', JSON.stringify(choices));
                     // Delete article choice from html
-                    article.remove();
                     // Update total price when deleting article
+                    location.reload();
+                    
                     // TODO.
                 }
             }

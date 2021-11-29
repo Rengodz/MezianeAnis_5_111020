@@ -76,7 +76,7 @@ fetch('http://localhost:3000/api/products/' + id)
         // Add list of choices in localstorage only once if not exist
         let choices = JSON.parse(localStorage.getItem('choices'));
         if (choices) {
-            console.log('already exist')
+            
         }
         else {
             choices = []

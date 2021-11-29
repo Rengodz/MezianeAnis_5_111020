@@ -38,6 +38,7 @@ if (choices) {
     let totalPrice = 0;
     choices.forEach(function(item){
         totalPrice += item['quantity'] * item['unitPrice'];
+        
     let totalPriceHtml = document.getElementById('totalPrice');
     totalPriceHtml.innerHTML += (totalPrice);
     });
@@ -68,7 +69,7 @@ if (choices) {
 
 
 
-                    
+
                     // Test du INPUT confirmation de commande.
                     
 

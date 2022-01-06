@@ -37,14 +37,14 @@ fetch('http://localhost:3000/api/products/' + id)
 
         // Get html zone where we want to add the product color
         let select = document.getElementById('colors');
-        for(color in product['colors']) {
+        for (color in product['colors']) {
             select.options[select.options.length] = new Option(product['colors'][color], color);
 
-            if(select.value === "null"){
-              alert ("Veuillez choisir une couleur"); // This will prevent the Form from submitting
-              return false;                              
-            }else{
-              return true; // this will submit the form.
+            if (select.value === "null") {
+                alert("Veuillez choisir une couleur"); // This will prevent the Form from submitting
+                return false;
+            } else {
+                return true; // this will submit the form.
             }
         };
 
@@ -54,38 +54,35 @@ fetch('http://localhost:3000/api/products/' + id)
         console.log('Error occured during api call..');
     });
 
-    // Get add to cart button
-    let addToCartButton = document.getElementById('addToCart');
+// Get add to cart button
+let addToCartButton = document.getElementById('addToCart');
 
-    // Add onclick listener on add to cart button
-    addToCartButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        let colorsSelect = document.getElementById('colors');
-        let productChoice = {
-            id: currentProduct['_id'],
-            name: currentProduct['name'],
-            unitPrice: currentProduct['price'],
-            colors: colorsSelect.options[colorsSelect.selectedIndex].text,
-            quantity: document.getElementById('quantity').value,
-            imageUrl: currentProduct['imageUrl']
-            
-        };
-        console.log(productChoice)
+// Add onclick listener on add to cart button
+addToCartButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    let colorsSelect = document.getElementById('colors');
+    let productChoice = {
+        id: currentProduct['_id'],
+        name: currentProduct['name'],
+        unitPrice: currentProduct['price'],
+        colors: colorsSelect.options[colorsSelect.selectedIndex].text,
+        quantity: document.getElementById('quantity').value,
+        imageUrl: currentProduct['imageUrl']
+
+    };
+    console.log(productChoice)
 
 
-        // Add list of choices in localstorage only once if not exist
-        let choices = JSON.parse(localStorage.getItem('choices'));
-        if (choices) {
-            
-        }
-        else {
-            choices = []
-            localStorage.setItem('choices', JSON.stringify(choices));
-        }
-        
-        // Add current choice to local storage
-        choices.push(productChoice)
+    // Add list of choices in localstorage only once if not exist
+    let choices = JSON.parse(localStorage.getItem('choices'));
+    if (choices) {
+        console.log("already exists.");
+    } else {
+        choices = []
         localStorage.setItem('choices', JSON.stringify(choices));
-    });
+    }
 
- 
+    // Add current choice to local storage
+    choices.push(productChoice)
+    localStorage.setItem('choices', JSON.stringify(choices));
+});

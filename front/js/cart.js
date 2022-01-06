@@ -7,22 +7,22 @@ let cartItems = document.getElementById('cart__items');
 
 // Iterate choices to add each choice to html zone
 if (choices) {
-    choices.forEach(function(item){
+    choices.forEach(function(item) {
         console.log(item);
         cartItems.innerHTML += `
-            <article class="cart__item" data-id="`+item['id']+`">
+            <article class="cart__item" data-id="` + item['id'] + `">
                 <div class="cart__item__img">
-                    <img src="`+item['imageUrl']+`" alt="Photographie d'un canapé">
+                    <img src="` + item['imageUrl'] + `" alt="Photographie d'un canapé">
                 </div>
                 <div class="cart__item__content">
                     <div class="cart__item__content__titlePrice">
-                        <h2>`+item['name']+`</h2>
-                        <p>`+item['unitPrice'] * item['quantity'] +`€</p>
+                        <h2>` + item['name'] + `</h2>
+                        <p>` + item['unitPrice'] * item['quantity'] + `€</p>
                     </div>
                     <div class="cart__item__content__settings">
                         <div class="cart__item__content__settings__quantity">
                             <p>Qté: </p>
-                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="`+item['quantity']+`">
+                            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="` + item['quantity'] + `">
                         </div>
                         <div class="cart__item__content__settings__delete">
                             <p class="deleteItem">Supprimer</p>
@@ -36,11 +36,10 @@ if (choices) {
 
     // Calculate total price itering localstorage
     let totalPrice = 0;
-    choices.forEach(function(item){
+    choices.forEach(function(item) {
         totalPrice += item['quantity'] * item['unitPrice'];
-        
-    let totalPriceHtml = document.getElementById('totalPrice');
-    totalPriceHtml.innerHTML += (totalPrice);
+        let totalPriceHtml = document.getElementById('totalPrice');
+        totalPriceHtml.innerHTML = totalPrice;
     });
     console.log(totalPrice);
 
@@ -53,7 +52,7 @@ if (choices) {
             const choiceIdToDelete = article.getAttribute('data-id');
             // Iterate each choice of choices and delete the choice
             // corresponding to the one selected with the delete button.
-            for (let i=0; i<choices.length; i++) {
+            for (let i = 0; i < choices.length; i++) {
                 if (choices[i]['id'] == choiceIdToDelete) {
                     console.log(choices[i]['id']);
                     choices.splice(i, 1);
@@ -64,14 +63,24 @@ if (choices) {
                     localStorage.setItem('choices', JSON.stringify(choices));
                     // Delete article choice from html
                     // Update total price when deleting article
-                    location.reload();
-                    
+                    // location.reload();
 
-
-
+                    // Calculate total price itering localstorage
+                    let totalPrice = 0;
+                    choices.forEach(function(item) {
+                        totalPrice += item['quantity'] * item['unitPrice'];
+                        let totalPriceHtml = document.getElementById('totalPrice');
+                        totalPriceHtml.innerHTML = totalPrice;
+                    });
+                    console.log(totalPrice);
 
                     // Test du INPUT confirmation de commande.
-                    
+
+                }
+            }
+        });
+    }
+}
 
 let form = document.querySelector('.cart__order__form');
 let order = document.getElementById('order');
@@ -84,24 +93,24 @@ let email = document.getElementById('email');
 
 // ---------- Création regex -------------
 
-form.firstName.addEventListener('change', function(){
+form.firstName.addEventListener('change', function() {
     // "this" est l'élément actuellement écouté par l'input avec le name firstName
     validFirstName(this);
 });
 
-form.lastName.addEventListener('change', function(){
+form.lastName.addEventListener('change', function() {
     validLastName(this);
 });
 
-form.address.addEventListener('change', function(){
+form.address.addEventListener('change', function() {
     validAddress(this);
 });
 
-form.city.addEventListener('change', function(){
+form.city.addEventListener('change', function() {
     validCity(this);
 });
 
-form.email.addEventListener('change', function(){
+form.email.addEventListener('change', function() {
     validEmail(this);
 });
 
@@ -180,69 +189,18 @@ const validEmail = (input_email) => {
     return valid;
 }
 
-/* on créer une fonction qui prend un tableau en argument. Nous utilisons
-ensuite .map pour aller chercher et push l'id de chaque élément du 
-localStorage dans notre tableau en argument */
-function getId(arr) {
-    tabLocalStorage.map(e => {
-        return arr.push(e.id);
-    });
-}
-
-order.addEventListener('click', (e) => {
-    e.preventDefault();
-    // nous créons un tableau vide puis on le rempli avec getId
-    let productId = [];
-    getId(productId);
-    
-    
-    /* si les valeurs retournées par nos fonction de validations sont à true
-    nous créons l'objet order qui contient les valeurs entrés dans les inputs
-    du formulaire + un tableau contenant les id des produits dans le panier */
-    if (
-        !validFirstName(name) ||
-        !validLastName(lastName) ||
-        !validAddress(address) ||
-        !validCity(city) ||
-        !validEmail(email)
-        ) {
-        e.preventDefault();
-    } else {
-        let order = {
-            contact: {
-                firstName: firstName.value,
-                lastName: lastName.value,
-                address: address.value,
-                city: city.value,
-                email: email.value
-            },
-            products: productId
-        };
-
-        /* nous envoyons notre objet de commande (formaté au format JSON) à 
-        l'adresse /products de l'API qui contient une entrée du même nom */
-        fetch('http://localhost:3000/api/products/order', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(order)
-        })
-        .then((reponse) => reponse.json())
-        .then((data) => {
-            localStorage.clear();
-            document.location.href = `confirmation.html?order_id=${data.orderId}`;
-        })
-        .catch((err) => console.log(err));
-        
-    }
-});
-                }
-            }
-        });
-    }
-}
-
-
-                    
-                
+/* nous envoyons notre objet de commande (formaté au format JSON) à 
+l'adresse /products de l'API qui contient une entrée du même nom */
+fetch('http://localhost:3000/api/products/order', {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(order)
+    })
+    .then((reponse) => reponse.json())
+    .then((data) => {
+        localStorage.clear();
+        document.location.href = `confirmation.html?order_id=${data.orderId}`;
+    })
+    .catch((err) => console.log(err));

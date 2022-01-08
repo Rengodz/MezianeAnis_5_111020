@@ -216,7 +216,7 @@ orderButton.addEventListener('click', (event) => {
         'productId': localStorage.id
     }
     products.forEach(function(id) {
-            productId == urlParams.get('id')
+            productId == choices('id')
 
             console.log(id);
         })

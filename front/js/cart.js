@@ -212,8 +212,10 @@ orderButton.addEventListener('click', (event) => {
         'productPrice': localStorage.unitPrice,
         'productQuantity': localStorage.quantity,
     }
-    let productId =
-        products.forEach(function(id) {
+    let productsId = {
+        'productId': localStorage.id
+    }
+    products.forEach(function(id) {
             productId == urlParams.get('id')
 
             console.log(id);

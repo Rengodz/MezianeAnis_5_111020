@@ -83,15 +83,13 @@ if (choices) {
 }
 
 let form = document.querySelector('.cart__order__form');
-let order = document.getElementById('order');
-let orderId = document.getElementById('orderId');
 let firstName = document.getElementById('firstName');
 let lastName = document.getElementById('lastName');
 let address = document.getElementById('address');
 let city = document.getElementById('city');
 let email = document.getElementById('email');
 
-// ---------- Création regex -------------
+//  regex creation
 
 form.firstName.addEventListener('change', function() {
     // "this" est l'élément actuellement écouté par l'input avec le name firstName
@@ -114,7 +112,8 @@ form.email.addEventListener('change', function() {
     validEmail(this);
 });
 
-// on créer une fonction pour la validation des noms avec errexpression régulière
+// validation input name
+
 const validFirstName = (input_name) => {
     let firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
     let regexName = new RegExp('^[a-zA-Z]{2,21}$', 'g');
@@ -177,8 +176,7 @@ const validEmail = (input_email) => {
         '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g'
     );
     let valid = false;
-    // on créer une variable qui contient une valeur false ou true selon
-    // la valeur entré dans l'input et testé par le regexEmail
+    // boolean confirmation input for regexEmail
     let testEmail = regexEmail.test(input_email.value);
     if (testEmail) {
         emailErrorMsg.innerText = '';
@@ -189,18 +187,59 @@ const validEmail = (input_email) => {
     return valid;
 }
 
-/* nous envoyons notre objet de commande (formaté au format JSON) à 
-l'adresse /products de l'API qui contient une entrée du même nom */
-fetch('http://localhost:3000/api/products/order', {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(order)
-    })
-    .then((reponse) => reponse.json())
-    .then((data) => {
-        localStorage.clear();
-        document.location.href = `confirmation.html?order_id=${data.orderId}`;
-    })
-    .catch((err) => console.log(err));
+
+// Get order button
+let orderButton = document.getElementById('order');
+
+// Add onclick listener on order button
+orderButton.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    // Create contact object
+    const contact = {
+        'firstName': firstName.value,
+        'lastName': lastName.value,
+        'address': address.value,
+        'city': city.value,
+        'email': email.value
+    }
+    console.log(contact);
+
+    // Create product list id
+
+    let products = {
+        'productTitle': productTitle.value,
+        'producDescription': productDescription.value,
+        'productPrice': productPrice.value,
+        'productIMage': productImage.value
+    }
+    let productId =
+        products.forEach(function(id) {
+            productId == urlParams.get('id')
+
+            console.log(id);
+        })
+        /*
+                    fetch('http://localhost:3000/api/products/order', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(
+                                'contact': contact,
+                                'products': products
+                            )
+                        })
+                        .then(function(res) {
+                            if (res.ok) {
+                                return res.json();
+                            }
+                        })
+                        .then((data) => {
+                            localStorage.clear();
+                            document.location.href = `confirmation.html?order_id=${data.orderId}`;
+                        })
+                        .catch(function(err) {
+                            // Une erreur est survenue
+                            console.log('Error occured during api call..');*/
+});

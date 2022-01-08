@@ -74,7 +74,7 @@ if (choices) {
                     });
                     console.log(totalPrice);
 
-                    // Test du INPUT confirmation de commande.
+                    // Test INPUT confirmation.
 
                 }
             }
@@ -92,7 +92,7 @@ let email = document.getElementById('email');
 //  regex creation
 
 form.firstName.addEventListener('change', function() {
-    // "this" est l'élément actuellement écouté par l'input avec le name firstName
+    // "this" input of firstName
     validFirstName(this);
 });
 
@@ -208,10 +208,9 @@ orderButton.addEventListener('click', (event) => {
     // Create product list id
 
     let products = {
-        'productTitle': productTitle.value,
-        'producDescription': productDescription.value,
-        'productPrice': productPrice.value,
-        'productIMage': productImage.value
+        'productTitle': localStorage.name,
+        'productPrice': localStorage.unitPrice,
+        'productQuantity': localStorage.quantity,
     }
     let productId =
         products.forEach(function(id) {

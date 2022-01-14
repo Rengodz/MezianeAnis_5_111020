@@ -147,81 +147,137 @@ if (choices) {
         });
     }
 
-    let form = document.querySelector('.cart__order__form');
-    let firstName = document.getElementById('firstName');
-    let lastName = document.getElementById('lastName');
-    let address = document.getElementById('address');
-    let city = document.getElementById('city');
-    let email = document.getElementById('email');
+    let divQtySettings = document.createElement('div');
+    divQtySettings.classList.add('cart__item__content__settings');
 
-    //  regex creation
+    // let the Quantity div
+    let qtySettings = document.createElement('div');
+    qtySettings.classList.add('cart__item__content__settings__quantity');
 
-    form.firstName.addEventListener('change', function() {
-        // "this" input of firstName
-        validFirstName(this);
-    });
+    let qtyCartItems = document.createElement('p');
+    qtyCartItems.innerText = 'Qté : ';
 
-    form.lastName.addEventListener('change', function() {
-        validLastName(this);
-    });
+    let qtyInput = document.createElement('input');
+    qtyInput.setAttribute('type', 'number');
+    qtyInput.classList.add('itemQuantity');
+    qtyInput.setAttribute('name', 'itemQuantity');
+    qtyInput.setAttribute('min', '1');
+    qtyInput.setAttribute('max', '100');
+    qtyInput.setAttribute('value', `${p.item['quantity']}`);
 
-    form.address.addEventListener('change', function() {
-        validAddress(this);
-    });
+    // let del buttons div
+    let deleteQty = document.createElement('div');
+    deleteQty.classList.add('cart__item__content__settings__delete');
 
-    form.city.addEventListener('change', function() {
-        validCity(this);
-    });
+    let deleteQtyBtn = document.createElement('p');
+    deleteQtyBtn.innerText = 'Supprimer';
+    deleteQtyBtn.classList.add('deleteItem');
 
-    form.email.addEventListener('change', function() {
-        validEmail(this);
-    });
+    deleteQTY.appendChild(deleteQtyBtn);
+    deleteQtyBtn.addEventListener('click', function(e) {
+        delete_product_to_cart(p.id);
+        // Reloading the page
+        window.location.reload()
+    })
 
-    // Get order button
-    let orderButton = document.getElementById('order');
+    // linking divs child to parents
+    qtySettings.appendChild(qtyCartItems);
+    qtySettings.appendChild(qtyInput);
+    divQtySettings.appendChild(qtySettings);
+    divQtySettings.appendChild(deleteQty);
 
-    // Add onclick listener on order button
-    orderButton.addEventListener('click', (event) => {
-        event.preventDefault();
+    choices.appendChild(unitPrice);
+    choices.appendChild(divQtySettings);
+    cartItems.appendChild(img);
+    cartItems.appendChild(choices);
 
-        // Create contact object
-        const contact = {
-            'firstName': firstName.value,
-            'lastName': lastName.value,
-            'address': address.value,
-            'city': city.value,
-            'email': email.value
-        }
-        console.log(contact);
+    section.appendChild(products);
 
-        // Create product list id
-        let productIds = choices.map((choice) => choice.id);
-        console.log('productIds');
-        console.log(productIds);
+    // updating price 
+    qtyInput.addEventListener('change', updateValue);
 
-        // Call order method
-        fetch('http://localhost:3000/api/products/order', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "contact": contact,
-                    "products": productIds
-                })
-            })
-            .then(function(res) {
-                if (res.ok) {
-                    return res.json();
-                }
-            })
-            .then((data) => {
-                localStorage.clear();
-                document.location.href = `confirmation.html?order_id=${data.orderId}`;
-            })
-            .catch(function(err) {
-                // Une erreur est survenue
-                console.log('Error occured during api call..');
-            });
-    });
+    function updateValue(e) {
+        // updating localStorage 
+        adjust_quantity(p.id, e.target.value);
+        unitPrice.textContent = `${e.target.value * p.price} €`;
+        totalPrice.textContent = total_cart_price();
+    }
 }
+
+let form = document.querySelector('.cart__order__form');
+let firstName = document.getElementById('firstName');
+let lastName = document.getElementById('lastName');
+let address = document.getElementById('address');
+let city = document.getElementById('city');
+let email = document.getElementById('email');
+
+//  regex creation
+
+form.firstName.addEventListener('change', function() {
+    // "this" input of firstName
+    validFirstName(this);
+});
+
+form.lastName.addEventListener('change', function() {
+    validLastName(this);
+});
+
+form.address.addEventListener('change', function() {
+    validAddress(this);
+});
+
+form.city.addEventListener('change', function() {
+    validCity(this);
+});
+
+form.email.addEventListener('change', function() {
+    validEmail(this);
+});
+
+// Get order button
+let orderButton = document.getElementById('order');
+
+// Add onclick listener on order button
+orderButton.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    // Create contact object
+    const contact = {
+        'firstName': firstName.value,
+        'lastName': lastName.value,
+        'address': address.value,
+        'city': city.value,
+        'email': email.value
+    }
+    console.log(contact);
+
+    // Create product list id
+    let productIds = choices.map((choice) => choice.id);
+    console.log('productIds');
+    console.log(productIds);
+
+    // Call order method
+    fetch('http://localhost:3000/api/products/order', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "contact": contact,
+                "products": productIds
+            })
+        })
+        .then(function(res) {
+            if (res.ok) {
+                return res.json();
+            }
+        })
+        .then((data) => {
+            localStorage.clear();
+            document.location.href = `confirmation.html?order_id=${data.orderId}`;
+        })
+        .catch(function(err) {
+            // Une erreur est survenue
+            console.log('Error occured during api call..');
+        });
+});

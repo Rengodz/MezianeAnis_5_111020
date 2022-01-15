@@ -197,10 +197,10 @@ if (choices) {
     qtyInput.addEventListener('change', updateValue);
 
     function updateValue(e) {
-        // updating localStorage 
+        // on updating localStorage 
         adjust_quantity(p.id, e.target.value);
         unitPrice.textContent = `${e.target.value * p.price} €`;
-        totalPrice.textContent = total_cart_price();
+        totalPrice.textContent = totalPrice();
     }
 }
 

@@ -164,6 +164,7 @@ if (choices) {
     qtyInput.setAttribute('min', '1');
     qtyInput.setAttribute('max', '100');
     qtyInput.setAttribute('value', `${p.item['quantity']}`);
+    console.log(qtyInput)
 
     // let del buttons div
     let deleteQty = document.createElement('div');

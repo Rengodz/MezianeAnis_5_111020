@@ -127,81 +127,60 @@ if (choices) {
                     // Update localstorage with new choices
                     localStorage.removeItem('choices');
                     localStorage.setItem('choices', JSON.stringify(choices));
-                    // Delete article choice from html
+
                     // Update total price when deleting article
                     // location.reload();
-
-                    // Calculate total price itering localstorage
                     let totalPrice = 0;
+                    // Calculate total price itering localstorage
                     choices.forEach(function(item) {
                         totalPrice += item['quantity'] * item['unitPrice'];
                         let totalPriceHtml = document.getElementById('totalPrice');
                         totalPriceHtml.innerHTML = totalPrice;
                     });
-                    console.log(totalPrice);
-
-                    // Test INPUT confirmation.
-
                 }
             }
+            // Delete html product zone
+            article.remove();
         });
     }
 
-    let divQtySettings = document.createElement('div');
-    divQtySettings.classList.add('cart__item__content__settings');
-
-    // let the Quantity div
-    let qtySettings = document.createElement('div');
-    qtySettings.classList.add('cart__item__content__settings__quantity');
-
-    let qtyCartItems = document.createElement('p');
-    qtyCartItems.innerText = 'Qté : ';
-
-    let qtyInput = document.createElement('input');
-    qtyInput.setAttribute('type', 'number');
-    qtyInput.classList.add('itemQuantity');
-    qtyInput.setAttribute('name', 'itemQuantity');
-    qtyInput.setAttribute('min', '1');
-    qtyInput.setAttribute('max', '100');
-    qtyInput.setAttribute('value', `${p.item['quantity']}`);
-    console.log(qtyInput)
-
-    // let del buttons div
-    let deleteQty = document.createElement('div');
-    deleteQty.classList.add('cart__item__content__settings__delete');
-
-    let deleteQtyBtn = document.createElement('p');
-    deleteQtyBtn.innerText = 'Supprimer';
-    deleteQtyBtn.classList.add('deleteItem');
-
-    deleteQTY.appendChild(deleteQtyBtn);
-    deleteQtyBtn.addEventListener('click', function(e) {
-        delete_product_to_cart(p.id);
-        // Reloading the page
-        window.location.reload()
-    })
-
-    // linking divs child to parents
-    qtySettings.appendChild(qtyCartItems);
-    qtySettings.appendChild(qtyInput);
-    divQtySettings.appendChild(qtySettings);
-    divQtySettings.appendChild(deleteQty);
-
-    choices.appendChild(unitPrice);
-    choices.appendChild(divQtySettings);
-    cartItems.appendChild(img);
-    cartItems.appendChild(choices);
-
-    section.appendChild(products);
-
-    // updating price 
-    qtyInput.addEventListener('change', updateValue);
-
-    function updateValue(e) {
-        // on updating localStorage 
-        adjust_quantity(p.id, e.target.value);
-        unitPrice.textContent = `${e.target.value * p.price} €`;
-        totalPrice.textContent = totalPrice();
+    // Get quantity elements
+    let itemQuantityInputs = document.getElementsByClassName('itemQuantity');
+    for (let button of itemQuantityInputs) {
+        button.addEventListener('change', (event) => {
+            console.log(button.value);
+            event.preventDefault();
+            const article = button.closest('article');
+            const choiceIdToUpdate = article.getAttribute('data-id');
+            console.log("choiceIdToUpdate:" + choiceIdToUpdate);
+            // Update product into choices with the new quantity
+            // Iterate each choice of choices and update the choice quantity
+            // corresponding to the one selected with the quantity button.
+            for (let i = 0; i < choices.length; i++) {
+                if (choices[i]['id'] == choiceIdToUpdate) {
+                    choices[i]['quantity'] = button.value;
+                }
+            }
+            // Update localstorage with new choices
+            localStorage.removeItem('choices');
+            localStorage.setItem('choices', JSON.stringify(choices));
+            console.log('new choices : ');
+            console.log(choices);
+            // Calculate total price itering localstorage
+            let totalPrice = 0;
+            choices.forEach(function(item) {
+                totalPrice += item['quantity'] * item['unitPrice'];
+                let totalPriceHtml = document.getElementById('totalPrice');
+                totalPriceHtml.innerHTML = totalPrice;
+            });
+            // Calculate sub total item price
+            let totalItemPrice = 0;
+            choices.forEach(function(item) {
+                totalItemPrice += item['quantity'] * item['unitPrice'];
+                let totalItemPriceHtml = document.getElementById('cart__item__content__titlePrice');
+                totalItemPriceHtml.innerHTML = totalItemPrice;
+            });
+        });
     }
 }
 

@@ -153,6 +153,9 @@ if (choices) {
             const article = button.closest('article');
             const choiceIdToUpdate = article.getAttribute('data-id');
             console.log("choiceIdToUpdate:" + choiceIdToUpdate);
+            // Updating sub total item price on Html
+            location.reload();
+
             // Update product into choices with the new quantity
             // Iterate each choice of choices and update the choice quantity
             // corresponding to the one selected with the quantity button.
@@ -166,6 +169,7 @@ if (choices) {
             localStorage.setItem('choices', JSON.stringify(choices));
             console.log('new choices : ');
             console.log(choices);
+
             // Calculate total price itering localstorage
             let totalPrice = 0;
             choices.forEach(function(item) {
@@ -173,13 +177,8 @@ if (choices) {
                 let totalPriceHtml = document.getElementById('totalPrice');
                 totalPriceHtml.innerHTML = totalPrice;
             });
-            // Calculate sub total item price
-            let totalItemPrice = 0;
-            choices.forEach(function(item) {
-                totalItemPrice += item['quantity'] * item['unitPrice'];
-                let totalItemPriceHtml = document.getElementById('cart__item__content__titlePrice');
-                totalItemPriceHtml.innerHTML = totalItemPrice;
-            });
+
+
         });
     }
 }

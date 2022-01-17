@@ -60,6 +60,7 @@ let addToCartButton = document.getElementById('addToCart');
 // Add onclick listener on add to cart button
 addToCartButton.addEventListener('click', (event) => {
     event.preventDefault();
+    alert("Article ajouté au panier");
     let colorsSelect = document.getElementById('colors');
     let productChoice = {
         id: currentProduct['_id'],
@@ -69,7 +70,9 @@ addToCartButton.addEventListener('click', (event) => {
         quantity: document.getElementById('quantity').value,
         imageUrl: currentProduct['imageUrl']
 
+
     };
+
     console.log(productChoice)
 
 
@@ -85,4 +88,6 @@ addToCartButton.addEventListener('click', (event) => {
     // Add current choice to local storage
     choices.push(productChoice)
     localStorage.setItem('choices', JSON.stringify(choices));
+
+
 });

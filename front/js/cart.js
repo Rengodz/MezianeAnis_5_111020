@@ -104,12 +104,16 @@ if (choices) {
         `;
     });
 
+
+
     // Calculate total price itering localstorage
     let totalPrice = 0;
     choices.forEach(function(item) {
         totalPrice += item['quantity'] * item['unitPrice'];
         let totalPriceHtml = document.getElementById('totalPrice');
         totalPriceHtml.innerHTML = totalPrice;
+
+
     });
 
     // Add an event on click on delete choice button

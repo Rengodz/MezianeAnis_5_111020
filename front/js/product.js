@@ -85,6 +85,17 @@ addToCartButton.addEventListener('click', (event) => {
         localStorage.setItem('choices', JSON.stringify(choices));
     }
 
+    const notDouble = (localStorage.getItem('id'));
+
+    const check_index = choices.findIndex(item => item.id === id);
+    if (check_index !== -1) {
+        choices[check_index].quantity++;
+
+        console.log("Quantity updated:", choices);
+    }
+
+
+
     // Add current choice to local storage
     choices.push(productChoice)
     localStorage.setItem('choices', JSON.stringify(choices));

@@ -60,58 +60,58 @@ let addToCartButton = document.getElementById('addToCart');
 // Add onclick listener on add to cart button
 addToCartButton.addEventListener('click', (event) => {
     event.preventDefault();
-    alert("Article ajouté au panier");
+
     let colorsSelect = document.getElementById('colors');
+    console.log('couleur selectionnee:');
+    console.log(colorsSelect.options[colorsSelect.selectedIndex].value);
 
-    let productChoice = {
-        id: currentProduct['_id'],
-        name: currentProduct['name'],
-        unitPrice: currentProduct['price'],
-        colors: colorsSelect.options[colorsSelect.selectedIndex].text,
-        quantity: document.getElementById('quantity').value,
-        imageUrl: currentProduct['imageUrl']
-    };
+    if (
+        colorsSelect.options[colorsSelect.selectedIndex].value &&
+        document.getElementById('quantity').value > 0
+    ) {
 
-    console.log(productChoice)
+        alert("Article ajouté au panier");
 
-    // Add list of choices in localstorage only once if not exist
-    let choices = JSON.parse(localStorage.getItem('choices'));
-    if (choices) {
-        console.log("already exists.");
-    } else {
-        choices = []
-        localStorage.setItem('choices', JSON.stringify(choices));
-    }
+        let productChoice = {
+            id: currentProduct['_id'],
+            name: currentProduct['name'],
+            unitPrice: currentProduct['price'],
+            colors: colorsSelect.options[colorsSelect.selectedIndex].text,
+            quantity: document.getElementById('quantity').value,
+            imageUrl: currentProduct['imageUrl']
+        };
 
-    // Iterate choices to verify if current product to add already exist.
-    // If exist, only add quantity.
-    productAlreadyExist = false;
-    choices.forEach(function(item) {
-        if (item['id'] == currentProduct['_id']) {
-            console.log('produit deja dans le localstorage');
-            productAlreadyExist = true;
+        console.log(productChoice)
+
+        // Add list of choices in localstorage only once if not exist
+        let choices = JSON.parse(localStorage.getItem('choices'));
+        if (choices) {
+            console.log("already exists.");
+        } else {
+            choices = []
+            localStorage.setItem('choices', JSON.stringify(choices));
         }
-    });
 
-    if (productAlreadyExist == false) {
-        // Add current choice to local storage
-        choices.push(productChoice);
+        // Iterate choices to verify if current product to add already exist.
+        // If exist, only add quantity.
+        productAlreadyExist = false;
+        choices.forEach(function(item) {
+            if (item['id'] == currentProduct['_id']) {
+                console.log('produit deja dans le localstorage');
+                productAlreadyExist = true;
+            }
+        });
+
+        if (productAlreadyExist == false) {
+            // Add current choice to local storage
+            choices.push(productChoice);
+        } else {
+            productIndex = choices.findIndex(item => item.id === currentProduct['_id']);
+            totalQuantity = parseInt(choices[productIndex].quantity, 10) + parseInt(productChoice.quantity, 10);
+            choices[productIndex].quantity = totalQuantity;
+        }
+        localStorage.setItem('choices', JSON.stringify(choices));
     } else {
-        productIndex = choices.findIndex(item => item.id === currentProduct['_id']);
-        totalQuantity = parseInt(choices[productIndex].quantity, 10) + parseInt(productChoice.quantity, 10);
-        choices[productIndex].quantity = totalQuantity;
+        alert('Veuillez sélectionner une couleur et une quantité valide.');
     }
-    localStorage.setItem('choices', JSON.stringify(choices));
 });
-
-
-let validPush = localStorage.setItem('choices', JSON.stringify(choices));
-if (color != [0]) {
-    alert('Article ajouté au panier');
-    validPush = true;
-
-} else {
-    alert('Veuillez selectionner une couleur');
-    validPush = false;
-
-}

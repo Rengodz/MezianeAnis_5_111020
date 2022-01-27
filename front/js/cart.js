@@ -132,6 +132,9 @@ if (choices) {
                     localStorage.removeItem('choices');
                     localStorage.setItem('choices', JSON.stringify(choices));
 
+                    // Mettre a jour le champ total html avec l'adition des quantites
+                    // du coup mettre à zero
+
                     // Update total price when deleting article
                     // location.reload();
                     let totalPrice = 0;
@@ -142,6 +145,10 @@ if (choices) {
                         totalPriceHtml.innerHTML = totalPrice;
                     });
                 }
+            }
+            if (!localStorage.getItem('choices')) {
+                console.log('plus de choices');
+                totalPriceHtml.innerHTML = 0;
             }
             // Delete html product zone
             article.remove();

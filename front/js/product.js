@@ -39,13 +39,6 @@ fetch('http://localhost:3000/api/products/' + id)
         let select = document.getElementById('colors');
         for (color in product['colors']) {
             select.options[select.options.length] = new Option(product['colors'][color], color);
-
-            if (select.value === "null") {
-                alert("Veuillez choisir une couleur"); // This will prevent the Form from submitting
-                return false;
-            } else {
-                return true; // this will submit the form.
-            }
         };
 
     })

@@ -57,7 +57,7 @@ const validEmail = (input_email) => {
         '^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g'
     );
     let valid = false;
-    // boolean confirmation input for regexEmail
+
     let testEmail = regexEmail.test(input_email.value);
     if (testEmail) {
         emailErrorMsg.innerText = '';

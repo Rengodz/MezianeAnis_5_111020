@@ -84,25 +84,7 @@ addToCartButton.addEventListener('click', (event) => {
             choices = []
             localStorage.setItem('choices', JSON.stringify(choices));
         }
-
-        // Iterate choices to verify if current product to add already exist.
-        // If exist, only add quantity.
-        productAlreadyExist = false;
-        choices.forEach(function(item) {
-            if (item['id'] == currentProduct['_id']) {
-                console.log('produit deja dans le localstorage');
-                productAlreadyExist = true;
-            }
-        });
-
-        if (productAlreadyExist == false) {
-            // Add current choice to local storage
-            choices.push(productChoice);
-        } else {
-            productIndex = choices.findIndex(item => item.id === currentProduct['_id']);
-            totalQuantity = parseInt(choices[productIndex].quantity, 10) + parseInt(productChoice.quantity, 10);
-            choices[productIndex].quantity = totalQuantity;
-        }
+        choices.push(productChoice)
         localStorage.setItem('choices', JSON.stringify(choices));
     } else {
         alert('Veuillez sélectionner une couleur et une quantité valide.');
